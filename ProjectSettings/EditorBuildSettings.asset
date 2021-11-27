@@ -21,12 +21,12 @@ EditorBuildSettings:
     path: Assets/Resources/Toony Colors Pro/Demo TCP2/Demo_TCP2_ShaderGenerator_2.unity
     guid: bb164159209f5434c8aa14c0d7075092
   - enabled: 1
-    path: Assets/AnimeGirlIdleAnimations_free/Scene/AGANFree_sample.unity
-    guid: 857dcfe654cb56a4fad752e7ac742dda
-  - enabled: 1
     path: Assets/Scenes/Game.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
-    path: Assets/Joystick Pack/Examples/Example_Scene.unity
+    path: Assets/Resources/Joystick/Examples/Example_Scene.unity
     guid: 1e9c253978d5e4442ae9ef570515b5da
+  - enabled: 1
+    path: Assets/Plugins/TypedScenes/Samples/SampleScene.unity
+    guid: aa2199f6e9ac15c42a11dc17b4469796
   m_configObjects: {}

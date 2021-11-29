@@ -12,9 +12,9 @@ public class CollectingState : State
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out Dish dish) && dish.Parent != gameObject && dish.IsAbleToMove)
+        if (other.TryGetComponent(out Plate dish) && dish.Parent != gameObject && dish.IsAbleToMove)
         {
-            _matrix.PushDish(dish);
+            _matrix.PushPlate(dish);
         }
     }
 }

@@ -34,7 +34,7 @@ public class PopState : State
     {
         if (_isAbleToPop && _matrix.Dishes.Count > 0)
         {
-            _matrix.PopDish(_shells);
+            _matrix.TryPopPlate(_shells);
             StartCoroutine(Timer());
         }
     }

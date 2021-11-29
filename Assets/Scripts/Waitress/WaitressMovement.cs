@@ -1,16 +1,18 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerInput))]
+[RequireComponent(typeof(PlayerInputState))]
 public class WaitressMovement : MonoBehaviour
 {
     [SerializeField] private float _speed;
     [SerializeField] private float _raycastDistance;
     [SerializeField] private LayerMask _obstacleLayerMask;
 
-    private PlayerInput _input;
+    private PlayerInputState _input;
+    private Vector3 _previousPosition;
 
     public event Action<Vector3> WaitressMoved;
+    public event Action<float> WaitressMovedOnDistance;
 
     private void OnValidate()
     {
@@ -20,7 +22,8 @@ public class WaitressMovement : MonoBehaviour
 
     private void Awake()
     {
-        _input = GetComponent<PlayerInput>();
+        _input = GetComponent<PlayerInputState>();
+        _previousPosition = transform.position;
     }
 
     private void OnEnable()
@@ -45,11 +48,28 @@ public class WaitressMovement : MonoBehaviour
 
         if (isBoxHit == false)
         {
-            WaitressMoved?.Invoke(direction);
             transform.position = nextPosition;
+            WaitressMoved?.Invoke(direction);
         }
 
+        TryUpdatePreviousPosition();
+
         TryLookTowardsDirection(direction);
+    }
+
+    private void TryUpdatePreviousPosition()
+    {
+        if (_previousPosition != transform.position)
+        {
+            float distance = Vector3.Distance(transform.position, _previousPosition);
+            WaitressMovedOnDistance?.Invoke(distance);
+
+            _previousPosition = transform.position;
+
+            return;
+        }
+
+        WaitressMovedOnDistance?.Invoke(0);
     }
 
     private void TryLookTowardsDirection(Vector3 direction)

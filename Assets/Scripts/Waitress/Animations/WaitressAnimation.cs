@@ -3,7 +3,8 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class WaitressAnimation : MonoBehaviour
 {
-    [SerializeField] private PlayerInput _input;
+    [SerializeField] private WaitressMovement _movement;
+    [SerializeField] private VictoryState _victory;
 
     private Animator _animator;
 
@@ -14,16 +15,23 @@ public class WaitressAnimation : MonoBehaviour
 
     private void OnEnable()
     {
-        _input.StickMoved += OnStickMoved;
+        _movement.WaitressMovedOnDistance += OnWaitressMovedOnDistance;
+        _victory.VictoryStateEntered += OnVictoryStateEntered;
     }
 
     private void OnDisable()
     {
-        _input.StickMoved -= OnStickMoved;
+        _movement.WaitressMovedOnDistance -= OnWaitressMovedOnDistance;
+        _victory.VictoryStateEntered -= OnVictoryStateEntered;
     }
 
-    private void OnStickMoved(Vector3 direction)
+    private void OnWaitressMovedOnDistance(float distance)
     {
-        _animator.SetFloat(WaitressTypedAnimations.Speed, direction.magnitude);
+        _animator.SetFloat(WaitressTypedAnimations.Speed, distance);
+    }
+
+    private void OnVictoryStateEntered()
+    {
+        _animator.Play(WaitressTypedAnimations.Dance);
     }
 }

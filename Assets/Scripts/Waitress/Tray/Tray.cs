@@ -8,14 +8,15 @@ public class Tray : MonoBehaviour
     [SerializeField] private float _yOffset;
     [SerializeField] private AudioSource _stackPlateSound;
 
-    private Stack<Plate> _dishes;
+    private Stack<Plate> _plates;
     private Vector3 _currentOffset;
-    private int _dishesAmount;
+    private int _platesAmount;
 
-    public IReadOnlyCollection<Plate> Dishes => _dishes;
+    public IReadOnlyCollection<Plate> Dishes => _plates;
 
     public event Action DishesPoped;
     public event Action<int, int> PlatesAmountChanged;
+    public event Action<int> PlatesDropped;
 
     private void OnValidate()
     {
@@ -24,22 +25,39 @@ public class Tray : MonoBehaviour
 
     private void Awake()
     {
-        _dishes = new Stack<Plate>();
+        _plates = new Stack<Plate>();
         _currentOffset = Vector3.zero;
-        _dishesAmount = 0;
+        _platesAmount = 0;
     }
 
     private void Start()
     {
-        PlatesAmountChanged?.Invoke(_dishesAmount, _maxDishesAmount);
+        PlatesAmountChanged?.Invoke(_platesAmount, _maxDishesAmount);
+    }
+
+    public void DropAllPlates()
+    {
+        int count = _plates.Count;
+
+        while(_plates.Count > 0)
+        {
+            Plate plate = _plates.Pop();
+
+            plate.Drop();
+
+            ChangePlatesAmount(-1);
+        }
+
+        _currentOffset = Vector3.zero;
+        PlatesDropped?.Invoke(count);
     }
 
     public void PushPlate(Plate dish)
     {
-        if (_dishesAmount < _maxDishesAmount)
+        if (_platesAmount < _maxDishesAmount)
         {
             dish.MoveToPlatesStack(transform, _currentOffset);
-            _dishes.Push(dish);
+            _plates.Push(dish);
 
             _currentOffset.y += _yOffset;
 
@@ -51,7 +69,7 @@ public class Tray : MonoBehaviour
 
     public void TryPopPlate(Shelf shells)
     {
-        Plate dish = _dishes.Pop();
+        Plate dish = _plates.Pop();
         _currentOffset.y -= _yOffset;
 
         shells.PlaceDish(dish);
@@ -63,14 +81,14 @@ public class Tray : MonoBehaviour
 
     private void CheckStackItemsCount()
     {
-        if (_dishes.Count <= 0)
+        if (_plates.Count <= 0)
             DishesPoped?.Invoke();
     }
 
     private void ChangePlatesAmount(int value)
     {
-        _dishesAmount += value;
+        _platesAmount += value;
 
-        PlatesAmountChanged(_dishesAmount, _maxDishesAmount);
+        PlatesAmountChanged?.Invoke(_platesAmount, _maxDishesAmount);
     }
 }

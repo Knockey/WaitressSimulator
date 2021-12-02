@@ -7,6 +7,7 @@ public class GameStateWatchdog : MonoBehaviour
     [SerializeField] private ConfettiEffect _confetties;
     [SerializeField] private EndScreenView _endScreen;
     [SerializeField] private PlatesAmountWatchdog _platesWatchdog;
+    [SerializeField] private NoPlatesLeftView _noPlatesLeftView;
     [SerializeField] private List<Star> _stars;
     [SerializeField] private float _oneStarPlatesPercent;
     [SerializeField] private float _twoStarsPlatesPercent;
@@ -32,10 +33,14 @@ public class GameStateWatchdog : MonoBehaviour
 
     private void OnAllPlatesPlaced(int value, int maxValue)
     {
+        _noPlatesLeftView.gameObject.SetActive(false);
         _confetties.gameObject.SetActive(true);
         _endScreen.gameObject.SetActive(true);
 
         int starsCount = GetStarsCount(value, maxValue);
+
+        if (starsCount == 0)
+            return;
 
         for (int i = 0; i < starsCount; i++)
         {
@@ -53,7 +58,10 @@ public class GameStateWatchdog : MonoBehaviour
         if (percent > _oneStarPlatesPercent)
             return _stars.Count - 1;
 
-        return _stars.Count - 2;
+        if (percent > 0)
+            return _stars.Count - 2;
+
+        return 0;
     }
 
     private IEnumerator ShowStar(Star star, int delay)

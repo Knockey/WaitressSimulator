@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -9,6 +10,8 @@ public class PopState : State
 
     private Tray _matrix;
     private bool _isAbleToPop;
+
+    public Action PlatesPlaced;
 
     private void OnValidate()
     {
@@ -37,6 +40,8 @@ public class PopState : State
             _matrix.TryPopPlate(_shells);
             StartCoroutine(Timer());
         }
+
+        PlatesPlaced?.Invoke();
     }
 
     private IEnumerator Timer()

@@ -10,7 +10,7 @@ public class PlayerInputState : State
 
     private void OnEnable()
     {
-        _waitressAnimation.RestoreInitialPositionAndRotation();
+        _waitressAnimation.RestoreInitials();
     }
 
     private void Update()

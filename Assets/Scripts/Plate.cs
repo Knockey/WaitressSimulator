@@ -27,6 +27,9 @@ public class Plate : MonoBehaviour
 
     public void MoveToPlatesStack(Transform matrix, Vector3 offset)
     {
+        if (matrix == null)
+            throw new System.NullReferenceException($"{nameof(matrix)} can't be null!");
+
         transform.SetParent(matrix);
         _parent = matrix.gameObject;
 
@@ -38,6 +41,9 @@ public class Plate : MonoBehaviour
 
     public void MoveToPlatesStack(Transform matrix, Vector3 offset, Vector3 rotation)
     {
+        if (matrix == null)
+            throw new System.NullReferenceException($"{nameof(matrix)} can't be null!");
+
         transform.SetParent(matrix);
         _parent = matrix.gameObject;
 

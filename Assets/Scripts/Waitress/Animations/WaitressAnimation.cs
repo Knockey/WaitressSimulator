@@ -39,6 +39,7 @@ public class WaitressAnimation : MonoBehaviour
         _fall.WaitressFelt -= OnWaitressFelt;
         _victory.VictoryStateEntered -= OnVictoryStateEntered;
     }
+
     public void InvokeFallAnimationCompletedEvent()
     {
         _animator.SetFloat(WaitressTypedAnimations.Speed, 0f);

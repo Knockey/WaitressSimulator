@@ -7,6 +7,11 @@ public class ObjectiveTextView : MonoBehaviour
     [SerializeField] private TMP_Text _text;
     [SerializeField] private float _timeBeforeDisable;
 
+    private void OnValidate()
+    {
+        _timeBeforeDisable = Mathf.Clamp(_timeBeforeDisable, 0, float.MaxValue);
+    }
+
     private void OnEnable()
     {
         StartCoroutine(StartTimerBeforeDisable());

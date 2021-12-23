@@ -27,16 +27,23 @@ public class Plate : MonoBehaviour
 
     public void MoveToPlatesStack(Transform matrix, Vector3 offset)
     {
+        if (matrix == null)
+            throw new System.NullReferenceException($"{nameof(matrix)} can't be null!");
+
         transform.SetParent(matrix);
         _parent = matrix.gameObject;
 
         Vector3 dishPosition = offset + Vector3.zero;
         transform.DOLocalMove(dishPosition, _flyTime);
 
-        TrySetMoveAbility(matrix);
+        TryUpdateMoveAbility(matrix);
     }
+
     public void MoveToPlatesStack(Transform matrix, Vector3 offset, Vector3 rotation)
     {
+        if (matrix == null)
+            throw new System.NullReferenceException($"{nameof(matrix)} can't be null!");
+
         transform.SetParent(matrix);
         _parent = matrix.gameObject;
 
@@ -44,10 +51,9 @@ public class Plate : MonoBehaviour
 
         Sequence sequence = DOTween.Sequence();
         sequence.Append(transform.DOMove(dishPosition, _flyTime));
-
         sequence.Insert(0, transform.DORotate(rotation, _flyTime));
 
-        TrySetMoveAbility(matrix);
+        TryUpdateMoveAbility(matrix);
     }
 
     public void Drop()
@@ -63,7 +69,7 @@ public class Plate : MonoBehaviour
         Destroy(gameObject, _dropTime);
     }
 
-    private void TrySetMoveAbility(Transform matrix)
+    private void TryUpdateMoveAbility(Transform matrix)
     {
         if (matrix.TryGetComponent(out Shelf shell))
             _isAbleToMove = false;

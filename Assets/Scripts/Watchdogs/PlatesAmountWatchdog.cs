@@ -14,15 +14,15 @@ public class PlatesAmountWatchdog : MonoBehaviour
     public event Action<int, int> AllPlatesPlaced;
     public event Action NoPlatesLeft;
 
+    private void OnValidate()
+    {
+        _totalPlatesAmount = Mathf.Clamp(_totalPlatesAmount, 0, int.MaxValue);
+    }
+
     private void Awake()
     {
         _remainToPlacePlatesAmount = _totalPlatesAmount;
         _placedPlatesAmount = 0;
-    }
-
-    private void OnValidate()
-    {
-        _totalPlatesAmount = Mathf.Clamp(_totalPlatesAmount, 0, int.MaxValue);
     }
 
     private void OnEnable()

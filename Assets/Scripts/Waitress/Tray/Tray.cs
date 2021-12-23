@@ -7,6 +7,7 @@ public class Tray : MonoBehaviour
     [SerializeField] private int _maxDishesAmount;
     [SerializeField] private float _yOffset;
     [SerializeField] private AudioSource _stackPlateSound;
+    [SerializeField] private ParticleSystem _placeEffect;
 
     private Stack<Plate> _plates;
     private Vector3 _currentOffset;
@@ -63,6 +64,8 @@ public class Tray : MonoBehaviour
 
             _stackPlateSound.Play();
 
+            SpawnPlaceEffect();
+
             ChangePlatesAmount(1);
         }
     }
@@ -77,6 +80,13 @@ public class Tray : MonoBehaviour
         CheckStackItemsCount();
 
         ChangePlatesAmount(-1);
+    }
+
+    private void SpawnPlaceEffect()
+    {
+        Vector3 effectPosition = new Vector3(transform.position.x, transform.position.y + _currentOffset.y, transform.position.z);
+
+        Instantiate(_placeEffect, effectPosition, transform.rotation, transform);
     }
 
     private void CheckStackItemsCount()

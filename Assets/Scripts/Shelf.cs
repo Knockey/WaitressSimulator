@@ -11,7 +11,6 @@ public class Shelf : MonoBehaviour
 
     private int _currentDishIndexInRow;
     private Vector3 _currentPlatePosition;
-    private int _platesAmount;
 
     public event Action PlatesAmountChanged;
 
@@ -24,16 +23,17 @@ public class Shelf : MonoBehaviour
     {
         _currentDishIndexInRow = 0;
         _currentPlatePosition = _initialPlatePosition.position;
-        _platesAmount = 0;
     }
 
-    public void PlaceDish(Plate dish)
+    public void PlaceDish(Plate plate)
     {
-        dish.MoveToPlatesStack(transform, _currentPlatePosition, _plateRotation);
+        if (plate == null)
+            throw new NullReferenceException($"{nameof(plate)} can't be null!");
+
+        plate.MoveToPlatesStack(transform, _currentPlatePosition, _plateRotation);
 
         _placePlateSound.Play();
 
-        _platesAmount++;
         PlatesAmountChanged?.Invoke();
 
         SetNewDishPosition();

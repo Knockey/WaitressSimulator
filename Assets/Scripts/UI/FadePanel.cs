@@ -8,9 +8,10 @@ public class FadePanel : MonoBehaviour
     [SerializeField] private float _absoluteFadeValue;
     [SerializeField] private float _animationTime;
 
+    private Image _image;
+
     public float AnimationTime => _animationTime;
 
-    private Image _image;
     private void OnValidate()
     {
         _absoluteFadeValue = Mathf.Clamp(_absoluteFadeValue, 0, 1);

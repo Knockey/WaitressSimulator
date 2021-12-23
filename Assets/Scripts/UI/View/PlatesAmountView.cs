@@ -13,6 +13,11 @@ public class PlatesAmountView : MonoBehaviour
 
     private Gradient _gradient;
 
+    private void OnValidate()
+    {
+        _sliderAnimationTime = Mathf.Clamp(_sliderAnimationTime, 0, float.MaxValue);
+    }
+
     private void Awake()
     {
         SetGradient();

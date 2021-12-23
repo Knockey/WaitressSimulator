@@ -1,28 +1,49 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
 public class WaitressAnimation : MonoBehaviour
 {
     [SerializeField] private WaitressMovement _movement;
+    [SerializeField] private FallState _fall;
     [SerializeField] private VictoryState _victory;
 
     private Animator _animator;
+    private Vector3 _initialPosition;
+    private Quaternion _initialRotation;
+
+    public event Action FallAnimationCompleted;
 
     private void Awake()
     {
         _animator = GetComponent<Animator>();
+        _initialPosition = transform.localPosition;
+        _initialRotation = transform.localRotation;
     }
 
     private void OnEnable()
     {
         _movement.WaitressMovedOnDistance += OnWaitressMovedOnDistance;
+        _fall.WaitressFelt += OnWaitressFelt;
         _victory.VictoryStateEntered += OnVictoryStateEntered;
     }
 
     private void OnDisable()
     {
         _movement.WaitressMovedOnDistance -= OnWaitressMovedOnDistance;
+        _fall.WaitressFelt -= OnWaitressFelt;
         _victory.VictoryStateEntered -= OnVictoryStateEntered;
+    }
+    public void InvokeFallAnimationCompletedEvent()
+    {
+        _animator.SetFloat(WaitressTypedAnimations.Speed, 0f);
+        FallAnimationCompleted?.Invoke();
+    }
+
+    public void RestoreInitialPositionAndRotation()
+    {
+        transform.localPosition = _initialPosition;
+        transform.localRotation = _initialRotation;
     }
 
     private void OnWaitressMovedOnDistance(float distance)
@@ -33,5 +54,10 @@ public class WaitressAnimation : MonoBehaviour
     private void OnVictoryStateEntered()
     {
         _animator.Play(WaitressTypedAnimations.Dance);
+    }
+
+    private void OnWaitressFelt()
+    {
+        _animator.Play(WaitressTypedAnimations.Fall);
     }
 }

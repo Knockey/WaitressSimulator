@@ -13,7 +13,7 @@ public class Shelf : MonoBehaviour
     private Vector3 _currentPlatePosition;
     private int _platesAmount;
 
-    public event Action<int> PlatesAmountChanged;
+    public event Action PlatesAmountChanged;
 
     private void OnValidate()
     {
@@ -34,7 +34,7 @@ public class Shelf : MonoBehaviour
         _placePlateSound.Play();
 
         _platesAmount++;
-        PlatesAmountChanged?.Invoke(_platesAmount);
+        PlatesAmountChanged?.Invoke();
 
         SetNewDishPosition();
     }

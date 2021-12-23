@@ -59,17 +59,11 @@ public class WaitressMovement : MonoBehaviour
 
     private void TryUpdatePreviousPosition()
     {
-        if (_previousPosition != transform.position)
-        {
-            float distance = Vector3.Distance(transform.position, _previousPosition);
-            WaitressMovedOnDistance?.Invoke(distance);
+        float distance = Vector3.Distance(transform.position, _previousPosition);
 
-            _previousPosition = transform.position;
+        WaitressMovedOnDistance?.Invoke(distance);
 
-            return;
-        }
-
-        WaitressMovedOnDistance?.Invoke(0);
+        _previousPosition = transform.position;
     }
 
     private void TryLookTowardsDirection(Vector3 direction)
